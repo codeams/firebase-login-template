@@ -9,33 +9,31 @@
   };
 
   firebase.initializeApp( config );
-
   const auth = firebase.auth();
 
-  // if ( auth.currentUser !== null ) {
-  //   window.location.href = 'done.html';
-  // }
-
-  firebase.auth().onAuthStateChanged(function(user) {
+  auth.onAuthStateChanged(function( user ) {
     if ( user ) {
       window.location.href = 'done.html';
-    } else {
-      console.log( 'NO hay un asqueroso usuario' );
     }
   });
 
-  const txtEmail = document.getElementById('email');
-  const txtPass = document.getElementsByName('pass')[0];
-  const btnLogin = document.getElementsByName('login')[0];
+  const txtEmail = document.getElementById( 'email' );
+  const txtPassword = document.getElementById( 'password' );
+  const btnLogin = document.getElementById( 'login-button' );
 
-  btnLogin.addEventListener('click', e => {
+  btnLogin.addEventListener('click', function( event ) {
+
     const email = txtEmail.value;
-    const pass = txtPass.value;
+    const password = txtPassword.value;
 
-    const promise = auth.signInWithEmailAndPassword(email, pass).then(function() {
+    const promise = auth.signInWithEmailAndPassword( email, password ).then(function() {
       window.location.href = 'done.html';
     });
-    promise.catch(function(error){ console.log( error.message ); });
+
+    promise.catch(function( error ) {
+      console.log( error.message );
+    });
+
   });
 
 

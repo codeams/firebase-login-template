@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+<!doctype html>
+<html lang="en"><head>
+
+  <meta charset="utf-8">
   <title>DONE</title>
-</head>
-<body>
+
+</head><body>
+
   <h1>DONE!!!</h1>
   <h2>YOU ARE LOGGED IN</h2>
 
-  <a href='#' id='signOut' onclick='polloLargo()'>Sign out.</a>
+  <a href='#' id='signOut'>Sign out.</a>
 
   <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
   <script>
+
+    // Configuración de firebase
     var config = {
       apiKey: "AIzaSyAob5TVDejP5x2oK7-txdJsrZ-XX-2pLxY",
       authDomain: "login-template-firebase.firebaseapp.com",
@@ -19,16 +22,28 @@
       storageBucket: "login-template-firebase.appspot.com",
       messagingSenderId: "682870522204"
     };
-    firebase.initializeApp(config);
+
+    firebase.initializeApp( config );
 
     const auth = firebase.auth();
 
-    function polloLargo() {
-      console.log( 'signing out...' );
-      auth.signOut().then(function() {
-        alert( 'Youre no longer signed in.' );
+
+    // Listener de firebase para cambios en
+    // el estado de la sesión
+    auth.onAuthStateChanged(function(user) {
+      if ( ! user ) {
+        window.location.href = 'login.html';
+      }
+    });
+
+
+    // Listener del botón de sign out
+    document
+      .getElementById( 'signOut' )
+      .addEventListener( 'click', function() {
+        auth.signOut();
       });
-    };
+
   </script>
-</body>
-</html>
+
+</body></html>
