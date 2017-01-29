@@ -7,5 +7,28 @@
 <body>
   <h1>DONE!!!</h1>
   <h2>YOU ARE LOGGED IN</h2>
+
+  <a href='#' id='signOut' onclick='polloLargo()'>Sign out.</a>
+
+  <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
+  <script>
+    var config = {
+      apiKey: "AIzaSyAob5TVDejP5x2oK7-txdJsrZ-XX-2pLxY",
+      authDomain: "login-template-firebase.firebaseapp.com",
+      databaseURL: "https://login-template-firebase.firebaseio.com",
+      storageBucket: "login-template-firebase.appspot.com",
+      messagingSenderId: "682870522204"
+    };
+    firebase.initializeApp(config);
+
+    const auth = firebase.auth();
+
+    function polloLargo() {
+      console.log( 'signing out...' );
+      auth.signOut().then(function() {
+        alert( 'Youre no longer signed in.' );
+      });
+    };
+  </script>
 </body>
 </html>
