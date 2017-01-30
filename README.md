@@ -1,2 +1,2 @@
-# firebase-login-template
-Login template using firebase
+# Quacker
+Aplicación demostrativa para Firebase (:
