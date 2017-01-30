@@ -13,7 +13,7 @@
 
   auth.onAuthStateChanged(function( user ) {
     if ( user ) {
-      window.location.href = 'done.html';
+      window.location.href = 'app.html';
     }
   });
 
@@ -27,7 +27,7 @@
     const password = txtPassword.value;
 
     const promise = auth.signInWithEmailAndPassword( email, password ).then(function() {
-      window.location.href = 'done.html';
+      window.location.href = 'app.html';
     });
 
     promise.catch(function( error ) {

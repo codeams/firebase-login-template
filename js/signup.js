@@ -11,12 +11,6 @@
   firebase.initializeApp( config );
   const auth = firebase.auth();
 
-  auth.onAuthStateChanged(function( user ) {
-    if ( user ) {
-      window.location.href = 'done.html';
-    }
-  });
-
   const txtFName = document.getElementById('fname');
   const txtLName = document.getElementById('lname');
   const txtEmail = document.getElementById('email');
@@ -35,11 +29,11 @@
 
         auth.currentUser.updateProfile({
           displayName: name
+        }).then(function() {
+          window.location.href = 'app.html';
         }).catch(function( error ) {
           console.log( error.message );
         });
-
-        window.location.href = 'done.html';
 
       }).catch(function( error ) {
         console.log( error.message );
@@ -50,7 +44,7 @@
   // User getters:
   // function getName() {
   //   var user = auth.currentUser;
-  // 
+  //
   //   if (user != null) {
   //     return user.displayName;
   //   } else {
