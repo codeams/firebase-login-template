@@ -1,6 +1,5 @@
 (function() {
 
-
   // Configuración copiada:
   var config = {
     apiKey: "AIzaSyAob5TVDejP5x2oK7-txdJsrZ-XX-2pLxY",
@@ -27,10 +26,10 @@
     var font = snapshot.child( 'font' ).val();
     var topic = snapshot.child( 'topic' ).val();
 
-    var bodyStyleObject = document.getElementsByTagName( 'body' )[0].style;
-
-    bodyStyleObject.backgroundColor = themeColor;
-    bodyStyleObject.fontFamily = font;
+    document.getElementById( 'say-cuack-form' ).style.borderColor = themeColor;
+    document.getElementById( 'button-cuack' ).style.backgroundImage = "url(icons/quacker.php?color="+ themeColor.replace(/#/g, '%23') +")";
+    document.getElementsByTagName( 'header' )[0].style.backgroundColor = themeColor;
+    document.getElementsByTagName( 'body' )[0].style.fontFamily = font;
 
     document.getElementById( 'topic' ).innerText = topic;
 
@@ -43,14 +42,14 @@
 
     if ( user ) {
 
-      var txtMessage = document.getElementById( 'message' );
-      var btnCuack = document.getElementById( 'cuack' );
+      var inputMessage = document.getElementById( 'input-message' );
+      var buttonCuack = document.getElementById( 'button-cuack' );
 
-      btnCuack.addEventListener( 'click', function() {
+      buttonCuack.addEventListener( 'click', function() {
 
-        dbref.child('messages').push().set({
+        dbref.child( 'messages' ).push().set({
 
-          'message' : txtMessage.value,
+          'message' : inputMessage.value,
           'timestamp' : + new Date(),
           'uid' : auth.currentUser.uid,
           'uname' : auth.currentUser.displayName,
@@ -63,11 +62,11 @@
           // mostrarlo aquí, eso lo hará el Listener
           // del nodo de mensajes :D
 
-          txtMessage.value = '';
+          inputMessage.value = '';
 
         }).catch(function( error ) {
 
-          console.log( 'Error: ' + error.message );
+          console.error( 'Error: ' + error.message );
 
         });
 
@@ -79,46 +78,50 @@
 
 
   // Listener de cambios al nodo de los mensajes
-  dbref.child( 'messages' ).orderByChild( 'timestamp' ).on( 'value', function( snapshot ) {
+  dbref.child( 'messages' )
+    .orderByChild( 'timestamp' )
+    .on( 'value', function( snapshot ) {
 
-    if ( ! snapshot.exists() ) {
+      if ( ! snapshot.exists() ) {
+        document
+          .getElementById( 'messages-list' )
+          .innerHTML = 'No hay mensajes.';
+
+        return;
+      }
+
+      var messagesHtml = '';
+
+      snapshot.forEach( function( message ) {
+
+        var authorEmail = message.child( 'uemail' ).val();
+        var authorName = message.child( 'uname' ).val();
+        var authorId = message.child( 'uid' ).val();
+        var content = message.child( 'message' ).val();
+
+        var messageHtml =
+          "<div class='message'>" +
+            "<div class='authorData'>" +
+              "<div class='authorName'>" + authorName + "</div>" +
+              "<div class='authorEmail'>&lt;" + authorEmail + "&gt;</div>" +
+            "</div>" +
+            "<div class='content'>" + content + "</div>" +
+          "</div>";
+
+        messagesHtml = messageHtml + messagesHtml;
+
+      });
+
       document
-        .getElementById( 'messages' )
-        .innerHTML = 'No hay mensajes.';
-
-      return;
-    }
-
-    var messagesHtml = '';
-
-    snapshot.forEach( function( message ) {
-
-      var authorEmail = message.child( 'uemail' ).val();
-      var authorName = message.child( 'uname' ).val();
-      var authorId = message.child( 'uid' ).val();
-      var content = message.child( 'message' ).val();
-
-      var messageHtml =
-        "<div class='message'>" +
-          "<div class='authorEmail'>" + authorEmail + "</div>" +
-          "<div class='authorName'>" + authorName + "</div>" +
-          "<div class='content'>" + content + "</div>" +
-        "</div>";
-
-      messagesHtml = messageHtml + messagesHtml;
+        .getElementById( 'messages-list' )
+        .innerHTML = messagesHtml;
 
     });
-
-    document
-      .getElementById( 'messages' )
-      .innerHTML = messagesHtml;
-
-  });
 
 
   // Listener del botón de cerrar sesión
   document
-    .getElementById( 'signOut' )
+    .getElementById( 'button-logout' )
     .addEventListener( 'click', function() {
       auth.signOut();
     });
