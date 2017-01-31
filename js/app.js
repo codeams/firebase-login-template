@@ -33,6 +33,10 @@
 
     document.getElementById( 'topic' ).innerText = topic;
 
+    document
+      .getElementById( 'input-message' )
+        .setAttribute( 'placeholder', 'Say cuack!' );
+
   });
 
 
@@ -132,7 +136,7 @@
   function addMessage() {
     var inputMessage = document.getElementById( 'input-message' );
     var buttonCuack = document.getElementById( 'button-cuack' );
-    
+
     var message = inputMessage.value;
 
     if ( message.length < 3 ) {
