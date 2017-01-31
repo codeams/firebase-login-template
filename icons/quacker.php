@@ -1,8 +1,14 @@
 <?php
+
   header('Content-type: image/svg+xml');
 
-  $blue = "white";
-  $color = isset( $_GET['color'] ) ? urldecode( $_GET['color'] ) : $blue;
+  $color;
+  $default_color = "white";
+
+  if ( isset( $_GET['color'] ) )
+    $color = urldecode( $_GET['color'] );
+  else
+    $color = $default_color;
 
 ?>
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

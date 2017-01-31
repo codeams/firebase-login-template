@@ -39,12 +39,12 @@
     var topic = _appConfig.child( 'topic' ).val();
 
     // Cambiando colores de la aplicación:
-    $( 'header' ).css( 'backgroundColor', themeColor );
+    $( 'header' ).css( 'background-color', themeColor );
     $( '#say-cuack-form' ).css( 'border-color', themeColor );
-    $( '#button-cuack' ).css( 'backgroundImage', 'url(icons/quacker.php?color='+ themeColor.replace(/#/g, '%23') +')' );
+    $( '#button-cuack' ).css( 'background-image', 'url(icons/quacker.php?color='+ themeColor.replace(/#/g, '%23') +')' );
 
     // Cambiando la fuente:
-    $( 'body' )[0].style.fontFamily = font;
+    $( 'body' ).css( 'font-family', font );
 
     // Cambiando el texto del topic:
     $( '#topic' ).text( topic );
@@ -73,10 +73,10 @@
   // Listener de cambios al nodo de los mensajes
   dbref.child( 'messages' )
     .orderByChild( 'timestamp' )
-    .on( 'value', function( snapshot ) {
+    .on( 'value', function( _messages ) {
 
       // Si no existe el nodo de mensajes:
-      if ( ! snapshot.exists() ) {
+      if ( ! _messages.exists() ) {
         document
           .getElementById( 'messages-list' )
           .innerHTML = 'No hay mensajes.';
@@ -87,12 +87,12 @@
       // else:
       var messagesHtml = '';
 
-      snapshot.forEach( function( message ) {
+      _messages.forEach( function( _message ) {
 
-        var authorEmail = message.child( 'uemail' ).val();
-        var authorName = message.child( 'uname' ).val();
-        var authorId = message.child( 'uid' ).val();
-        var content = message.child( 'message' ).val();
+        var authorEmail = _message.child( 'uemail' ).val();
+        var authorName = _message.child( 'uname' ).val();
+        var authorId = _message.child( 'uid' ).val();
+        var content = _message.child( 'message' ).val();
 
         var messageHtml =
           "<div class='message'>" +
@@ -112,7 +112,8 @@
     });
 
 
-  // Listener del botón de cerrar sesión
+  /* -- Listeners de eventos de la interfaz -- */
+
   $( '#button-logout' ).on( 'click', function() {
     auth.signOut();
   });
@@ -124,17 +125,7 @@
   });
 
 
-  function shakeDatAss() {
-
-    $( '#say-cuack-form' )
-      .removeClass( 'shake' )
-      .addClass( 'shake' );
-
-    setTimeout(function() {
-      $( '#say-cuack-form' ).removeClass( 'shake' );
-    }, 1200);
-
-  }
+  /* -- Other functions: -- */
 
   function addMessage() {
     var inputMessage = $( '#input-message' );
@@ -167,11 +158,21 @@
 
       inputMessage.val( '' );
 
-    }).catch(function( error ) {
+    }, function( error ) {
 
       console.error( 'Error: ' + error.message );
 
     });
+  }
+
+  function shakeDatAss() {
+
+    $( '#say-cuack-form' ).addClass( 'shake' );
+
+    setTimeout(function() {
+      $( '#say-cuack-form' ).removeClass( 'shake' );
+    }, 1200);
+
   }
 
 })();
