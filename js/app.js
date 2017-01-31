@@ -42,33 +42,9 @@
 
     if ( user ) {
 
-      var inputMessage = document.getElementById( 'input-message' );
-      var buttonCuack = document.getElementById( 'button-cuack' );
+      document.getElementById( 'button-cuack' ).addEventListener( 'click', function() {
 
-      buttonCuack.addEventListener( 'click', function() {
-
-        dbref.child( 'messages' ).push().set({
-
-          'message' : inputMessage.value,
-          'timestamp' : + new Date(),
-          'uid' : auth.currentUser.uid,
-          'uname' : auth.currentUser.displayName,
-          'uemail' : auth.currentUser.email
-
-        }).then(function() {
-
-          // Firebase usa data-binding
-          // El mensaje se agregó, pero no tenemos que
-          // mostrarlo aquí, eso lo hará el Listener
-          // del nodo de mensajes :D
-
-          inputMessage.value = '';
-
-        }).catch(function( error ) {
-
-          console.error( 'Error: ' + error.message );
-
-        });
+        addMessage();
 
       });
 
@@ -125,5 +101,70 @@
     .addEventListener( 'click', function() {
       auth.signOut();
     });
+
+  document
+    .getElementById( 'input-message' )
+    .addEventListener( 'keydown', function( event ) {
+      if ( event.keyCode === 13 ) {
+        addMessage();
+      }
+    });
+
+
+  function shakeDatAss() {
+
+    document
+      .getElementById( 'say-cuack-form' )
+        .className = "";
+
+    document
+      .getElementById( 'say-cuack-form' )
+        .className = "shake";
+
+    setTimeout(function() {
+      document
+        .getElementById( 'say-cuack-form' )
+          .className = "";
+    }, 1200);
+
+  }
+
+  function addMessage() {
+    var inputMessage = document.getElementById( 'input-message' );
+    var buttonCuack = document.getElementById( 'button-cuack' );
+    
+    var message = inputMessage.value;
+
+    if ( message.length < 3 ) {
+      shakeDatAss();
+      return;
+    } else if ( message.length > 140 ) {
+      shakeDatAss();
+      return;
+    }
+
+    dbref.child( 'messages' ).push().set({
+
+      'message' : message,
+      'timestamp' : + new Date(),
+      'uid' : auth.currentUser.uid,
+      'uname' : auth.currentUser.displayName,
+      'uemail' : auth.currentUser.email
+
+    }).then(function() {
+
+      // Firebase usa data-binding
+      // El mensaje se agregó, pero no tenemos que
+      // mostrarlo aquí, eso lo hará el Listener
+      // del nodo de mensajes :D
+
+      inputMessage.value = '';
+
+    }).catch(function( error ) {
+
+      console.error( 'Error: ' + error.message );
+
+    });
+  }
 
 })();
