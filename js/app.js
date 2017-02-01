@@ -115,7 +115,8 @@
     });
 
 
-  function shakeDatAss() {
+
+  function shake() {
 
     document
       .getElementById( 'say-cuack-form' )
@@ -140,10 +141,10 @@
     var message = inputMessage.value;
 
     if ( message.length < 3 ) {
-      shakeDatAss();
+      shake();
       return;
     } else if ( message.length > 140 ) {
-      shakeDatAss();
+      shake();
       return;
     }
 
