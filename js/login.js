@@ -11,121 +11,56 @@
   firebase.initializeApp( config );
   const auth = firebase.auth();
 
+  const txtEmail = document.getElementById( 'email' );
+  const txtPassword = document.getElementById( 'password' );
+  const btnLogin = document.getElementById( 'login-button' );
+
+  function signIn() {
+    const email = txtEmail.value;
+    const password = txtPassword.value;
+
+    auth
+    .signInWithEmailAndPassword( email, password )
+    .catch(function( error ) {
+      shake();
+      console.log( error.message );
+    });
+  }
+
+  btnLogin.addEventListener('click', function( event ) {
+    signIn();
+  });
+
+  txtPassword.addEventListener( 'keydown', function( event ) {
+    if ( event.keyCode === 13 ) {
+
+      const email = txtEmail.value;
+      const password = txtPassword.value;
+
+      signIn();
+    }
+  });
+
+
   auth.onAuthStateChanged(function( user ) {
     if ( user ) {
       window.location.href = 'app.html';
     }
   });
 
-  const txtEmail = document.getElementById( 'email' );
-  const txtPassword = document.getElementById( 'password' );
-  const btnLogin = document.getElementById( 'login-button' );
-
-  btnLogin.addEventListener('click', function( event ) {
-
-    const email = txtEmail.value;
-    const password = txtPassword.value;
-
-    const promise = auth.signInWithEmailAndPassword( email, password ).then(function() {
-      window.location.href = 'app.html';
-    });
-
-    promise.catch(function( error ) {
-      console.log( error.message );
-    });
-
-  });
 
 
+  function shake() {
+    const loginCard = document.getElementsByTagName('div')[0];
 
+    loginCard.className = "login-card";
+    loginCard.className = "login-card shake";
 
-
-
-
-
-  // User getters:
-
-  function getName() {
-    var user = auth.currentUser;
-
-    if (user != null) {
-      return user.displayName;
-    } else {
-      return null;
-    }
-  }
-
-  function getEmail() {
-    var user = auth.currentUser;
-
-    if (user != null) {
-      return user.email;
-    } else {
-      return null;
-    }
+    setTimeout(function(){
+      loginCard.className = "login-card";
+    }, 1200);
 
   }
-
-  function getPhotoUrl() {
-    var user = auth.currentUser;
-
-    if (user != null) {
-      return user.photoUrl;
-    } else {
-      return null;
-    }
-  }
-
-  function getUid() {
-    var user = auth.currentUser;
-
-    if (user != null) {
-      return user.uid;
-    } else {
-      return null;
-    }
-  }
-
-
-
-  //User setters:
-
-  function setName(name) {
-    var user = auth.currentUser;
-
-    user.updateProfile({
-      displayName: name
-    }).then(function() {
-      // Update successful.
-    }, function(error) {
-      // An error happened.
-    });
-  }
-
-  /*
-  function setEmail() {
-    var user = auth.currentUser;
-
-    if (user != null) {
-      return user.email;
-    } else {
-      return null;
-    }
-  }
-  */
-
-  function setPhotoUrl(url) {
-    var user = auth.currentUser;
-
-    user.updateProfile({
-      photoUrl: url
-    }).then(function() {
-      // Update successful.
-    }, function(error) {
-      // An error happened.
-    });
-  }
-
 
 
 }());

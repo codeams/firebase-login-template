@@ -17,11 +17,14 @@
   const txtPassword = document.getElementById('password');
   const btnSignup = document.getElementById('signup-button');
 
-  btnSignup.addEventListener('click', function( event ) {
-
+  function signUp() {
     const email = txtEmail.value;
     const password = txtPassword.value;
     const name = txtFName.value + " " + txtLName.value;
+    if (name.length < 3) {
+      shake();
+      return;
+    }
 
     auth
       .createUserWithEmailAndPassword( email, password )
@@ -36,90 +39,34 @@
         });
 
       }).catch(function( error ) {
+        shake();
         console.log( error.message );
       });
+  }
 
+
+
+  btnSignup.addEventListener('click', function( event ) {
+    signUp();
   });
 
-  // User getters:
-  // function getName() {
-  //   var user = auth.currentUser;
-  //
-  //   if (user != null) {
-  //     return user.displayName;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-  //
-  // function getEmail() {
-  //   var user = auth.currentUser;
-  //
-  //   if (user != null) {
-  //     return user.email;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-  //
-  // function getPhotoUrl() {
-  //   var user = auth.currentUser;
-  //
-  //   if (user != null) {
-  //     return user.photoUrl;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-  //
-  // function getUid() {
-  //   var user = auth.currentUser;
-  //
-  //   if (user != null) {
-  //     return user.uid;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-  //
-  //
-  //
-  // //User setters:
-  //
-  // function setName(name) {
-  //   var user = auth.currentUser;
-  //
-  //   user.updateProfile({
-  //     displayName: name
-  //   }).then(function() {
-  //     // Update successful.
-  //   }, function(error) {
-  //     // An error happened.
-  //   });
-  // }
-  //
-  // /*
-  // function setEmail() {
-  //   var user = auth.currentUser;
-  //
-  //   if (user != null) {
-  //     return user.email;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-  // */
-  //
-  // function setPhotoUrl(url) {
-  //   var user = auth.currentUser;
-  //
-  //   user.updateProfile({
-  //     photoUrl: url
-  //   }).then(function() {
-  //     // Update successful.
-  //   }, function(error) {
-  //     // An error happened.
-  //   });
-  // }
+  txtPassword.addEventListener( 'keydown', function( event ) {
+    if ( event.keyCode === 13 ) {
+      signUp();
+    }
+  });
+
+
+  function shake() {
+    const loginCard = document.getElementsByTagName('div')[0];
+
+    loginCard.className = "login-card";
+    loginCard.className = "login-card shake";
+
+    setTimeout(function(){
+      loginCard.className = "login-card";
+    }, 1200);
+
+  }
 
 }());

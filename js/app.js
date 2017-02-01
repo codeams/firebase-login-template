@@ -134,10 +134,10 @@
     var message = inputMessage.val();
 
     if ( message.length < 3 ) {
-      shakeDatAss();
+      shake();
       return;
     } else if ( message.length > 140 ) {
-      shakeDatAss();
+      shake();
       return;
     }
 
