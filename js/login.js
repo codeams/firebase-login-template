@@ -33,10 +33,6 @@
 
   txtPassword.addEventListener( 'keydown', function( event ) {
     if ( event.keyCode === 13 ) {
-
-      const email = txtEmail.value;
-      const password = txtPassword.value;
-
       signIn();
     }
   });
